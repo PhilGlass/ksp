@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     testImplementation("junit:junit:$junitVersion")
+    testImplementation("org.assertj:assertj-core:3.20.2")
     testImplementation(gradleTestKit())
 }
 
