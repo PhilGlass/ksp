@@ -31,6 +31,21 @@ class AndroidIT {
             }
         }
     }
+
+    @Test
+    fun testAllowSourcesFromOtherPlugins() {
+        File(project.root, "workload/build.gradle.kts")
+            .appendText("\nksp {\n  allowSourcesFromOtherPlugins = true\n}\n")
+
+        val gradleRunner = GradleRunner.create().withProjectDir(project.root).forwardOutput()
+
+        gradleRunner.withArguments("build", "--no-configuration-cache").build().let { result ->
+            Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:kspDebugKotlin")?.outcome)
+        }
+        gradleRunner.withArguments("build", "--no-configuration-cache").build().let { result ->
+            Assert.assertEquals(TaskOutcome.UP_TO_DATE, result.task(":workload:kspDebugKotlin")?.outcome)
+        }
+    }
 }
 
 /**
